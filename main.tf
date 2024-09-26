@@ -3,6 +3,7 @@ locals {
   tags_common = {
     environment = "training"
     client      = "generali"
+    location    = local.WESTEUROPE
   }
 }
 
