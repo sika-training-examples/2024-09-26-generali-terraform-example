@@ -13,12 +13,18 @@ resource "azurerm_resource_group" "aks-example" {
 
 
 resource "azurerm_kubernetes_cluster" "example" {
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
   name                              = local.aks_name
   location                          = azurerm_resource_group.aks-example.location
   resource_group_name               = azurerm_resource_group.aks-example.name
   dns_prefix                        = local.aks_name
   kubernetes_version                = local.aks_kubernetes_version
   role_based_access_control_enabled = true
+  tags                              = local.tags_common
 
   default_node_pool {
     name       = substr(replace(local.aks_name, "-", ""), 0, 12)

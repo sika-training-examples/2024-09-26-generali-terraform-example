@@ -4,6 +4,7 @@ locals {
     environment = "training"
     client      = "generali"
     location    = local.WESTEUROPE
+    created_at  = timestamp()
   }
 }
 
@@ -12,6 +13,8 @@ data "azurerm_resource_group" "root" {
 }
 
 resource "azurerm_resource_group" "example" {
+  lifecycle { ignore_changes = [tags, ] }
+
   name       = "generali-example"
   location   = local.WESTEUROPE
   tags       = local.tags_common
@@ -19,11 +22,17 @@ resource "azurerm_resource_group" "example" {
 }
 
 resource "azurerm_storage_account" "example" {
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
   name                     = "generaliexampletraining"
   resource_group_name      = azurerm_resource_group.example.name
   location                 = azurerm_resource_group.example.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+  tags                     = local.tags_common
 }
 
 resource "azurerm_storage_container" "example" {
