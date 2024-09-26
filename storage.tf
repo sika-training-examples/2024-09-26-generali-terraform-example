@@ -23,3 +23,12 @@ module "bar_storage" {
     }
   }
 }
+
+module "baz_storage" {
+  source = "git::https://github.com/sika-training-examples/2024-09-26-generali-terraform-modules-example.git//modules/storage?ref=storage-v1"
+
+  name                = "generaliexamplebaz"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+  tags_common         = local.tags_common
+}
