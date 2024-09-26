@@ -10,3 +10,11 @@ run-postgres:
 
 backup-postgres:
 	docker exec generali-terraform-state-postgres pg_dump -U postgres -d postgres > tmp/postgres.sql
+
+infracost:
+	infracost breakdown --path . --show-skipped
+
+infracost-html:
+	mkdir -p .infracost-reports
+	infracost breakdown --path . --format=json --out-file .infracost-reports/report.json
+	infracost output --path .infracost-reports/report.json --format html --out-file .infracost-reports/report.html
