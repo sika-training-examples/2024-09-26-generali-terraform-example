@@ -8,6 +8,14 @@ locals {
   }
 }
 
+module "pets" {
+  source = "./pets"
+}
+
+output "pet_names" {
+  value = module.pets.pet_names
+}
+
 data "azurerm_resource_group" "root" {
   name = "generali"
 }
