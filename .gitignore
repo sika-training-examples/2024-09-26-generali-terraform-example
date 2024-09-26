@@ -23,6 +23,7 @@
 .terraform.tfstate.lock.info
 *.tfvars
 !*.EXAMPLE.tfvars
+*.tfplan
 override.tf
 
 # Infracost
