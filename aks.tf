@@ -24,6 +24,12 @@ resource "azurerm_kubernetes_cluster" "example" {
     name       = substr(replace(local.aks_name, "-", ""), 0, 12)
     node_count = local.aks_node_count
     vm_size    = local.aks_vm_size
+
+    upgrade_settings {
+      drain_timeout_in_minutes      = 0
+      max_surge                     = "10%"
+      node_soak_duration_in_minutes = 0
+    }
   }
 
   identity {
