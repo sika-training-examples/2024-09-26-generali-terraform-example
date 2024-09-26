@@ -6,8 +6,13 @@ locals {
   }
 }
 
+data "azurerm_resource_group" "root" {
+  name = "generali"
+}
+
 resource "azurerm_resource_group" "example" {
-  name     = "generali-example"
-  location = local.WESTEUROPE
-  tags     = local.tags_common
+  name       = "generali-example"
+  location   = local.WESTEUROPE
+  tags       = local.tags_common
+  managed_by = data.azurerm_resource_group.root.id
 }
