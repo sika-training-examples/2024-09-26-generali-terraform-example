@@ -5,6 +5,7 @@ terraform {
       version = "4.3.0"
     }
   }
+  backend "pg" {}
 }
 
 variable "subscription_id" {}

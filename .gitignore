@@ -29,3 +29,7 @@ override.tf
 # Infracost
 .infracost
 .infracost-reports
+
+# Project
+/tmp/**
+!/tmp/.gitkeep
