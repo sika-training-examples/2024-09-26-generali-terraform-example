@@ -32,6 +32,14 @@ resource "azurerm_storage_container" "example" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "count" {
+  count = 2
+
+  name                  = "count${count.index}"
+  storage_account_name  = azurerm_storage_account.example.name
+  container_access_type = "private"
+}
+
 resource "azurerm_storage_container" "terraform_states" {
   name                  = "terraform-states"
   storage_account_name  = azurerm_storage_account.example.name
@@ -43,10 +51,15 @@ output "storage_account_name" {
 }
 
 output "container_names" {
-  value = [
+  value = concat([
     azurerm_storage_container.example.name,
     azurerm_storage_container.terraform_states.name,
-  ]
+    ],
+    [
+      for c in azurerm_storage_container.count :
+      c.name
+    ]
+  )
 }
 
 output "primary_access_key" {
