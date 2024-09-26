@@ -40,6 +40,25 @@ resource "azurerm_storage_container" "count" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "for_each" {
+  for_each = toset(["two", "three"])
+
+  name                  = "for-each-${each.key}"
+  storage_account_name  = azurerm_storage_account.example.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "for_each_2" {
+  for_each = {
+    foo = { private = true },
+    bar = { private = false },
+  }
+
+  name                  = "for-each-2-${each.key}"
+  storage_account_name  = azurerm_storage_account.example.name
+  container_access_type = each.value.private ? "private" : "container"
+}
+
 resource "azurerm_storage_container" "terraform_states" {
   name                  = "terraform-states"
   storage_account_name  = azurerm_storage_account.example.name
@@ -58,7 +77,15 @@ output "container_names" {
     [
       for c in azurerm_storage_container.count :
       c.name
-    ]
+    ],
+    [
+      for c in azurerm_storage_container.for_each :
+      c.name
+    ],
+    [
+      for c in azurerm_storage_container.for_each_2 :
+      c.name
+    ],
   )
 }
 
