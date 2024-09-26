@@ -31,12 +31,21 @@ resource "azurerm_storage_container" "example" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "terraform_states" {
+  name                  = "terraform-states"
+  storage_account_name  = azurerm_storage_account.example.name
+  container_access_type = "private"
+}
+
 output "storage_account_name" {
   value = azurerm_storage_account.example.name
 }
 
-output "container_name" {
-  value = azurerm_storage_container.example.name
+output "container_names" {
+  value = [
+    azurerm_storage_container.example.name,
+    azurerm_storage_container.terraform_states.name,
+  ]
 }
 
 output "primary_access_key" {
